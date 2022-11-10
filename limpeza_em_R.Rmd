@@ -1,0 +1,77 @@
+```{r}
+#importa dados, string vazio como NA, string como fatores
+dados = read.csv("tempo.csv", sep = ";", na.strings="", stringsAsFactors=T)
+head(dados)
+summary(dados)
+```
+
+
+```{r}
+colnames(dados)
+# excluindo a coluna Vento
+excluir <- 'Vento'
+dados <- dados[,!(names(dados)%in% excluir)]
+head(dados)
+colnames(dados)
+```
+
+
+```{r}
+# Aparencia
+counts = table(dados$Aparencia)
+barplot(counts, main="Aparencia", xlab="Aparencia")
+# Transformando o valor menos em nublado
+dados[!dados$Aparencia %in% c('chuva','nublado','sol'),]$Aparencia = "nublado"
+summary(dados$Aparencia)
+#removemos fatores não usados
+dados$Aparencia =   factor(dados$Aparencia)
+#visualizar novamente
+summary(dados$Aparencia)
+```
+
+
+```{r}
+# Temperatura
+summary(dados$Temperatura)
+boxplot(dados$Temperatura,outline = T)
+hist(dados$Temperatura)
+# Removendo outline
+x = boxplot(dados$Temperatura)$out
+x
+#atualizando para mediana
+median(dados$Temperatura)
+dados[dados$Temperatura == x  , ]$Temperatura = median(dados$Temperatura)
+summary(dados$Temperatura)
+dados[dados$Temperatura<-130 | dados$Temperatura>130 ,]$Temperatura
+```
+
+
+```{r}
+# Umidade
+summary(dados$Umidade)
+dados[!complete.cases(dados),]
+# ver mediana
+median(dados$Umidade,na.rm = T)
+#atribuir mediana a NAs
+dados[is.na(dados$Umidade),]$Umidade = median(dados$Umidade,na.rm = T)
+#buscar NAS em Umidade para checar
+dados[!complete.cases(dados$Umidade),]
+summary(dados$Umidade)
+boxplot(dados$Umidade,outline = T)
+hist(dados$Umidade)
+# removendo outline
+x = boxplot(dados$Umidade)$out
+x
+median(dados$Umidade)
+dados[dados$Umidade == x  , ]$Umidade = median(dados$Umidade)
+summary(dados$Umidade)
+```
+
+```{r}
+# Jogar
+counts = table(dados$Jogar)
+barplot(counts, main="Jogar", xlab="Jogar")
+
+
+```
+
