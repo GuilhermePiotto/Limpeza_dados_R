@@ -1,6 +1,5 @@
 ---
-Formação Cientista de Dados
-Limpeza e Tratamento de Dados
+
 ---
 
 ```{r}
@@ -85,15 +84,15 @@ Idades fora do domínio
 ```{r}
 summary(dados$Idade)
 #fora do dominio, numérico - ver idades anormais
-dados[dados$Idade<0 | dados$Idade>110 ,]$Idade
+dados[dados$Idade<18 | dados$Idade>110 ,]$Idade
 #não temos idade NAs
 dados[is.na(dados$Idade),]
 #opção, preencher com mediana
 median(dados$Idade)
 #subtituição
-dados[dados$Idade<0 | dados$Idade>110 ,]$Idade = median(dados$Idade) 
+dados[dados$Idade<18 | dados$Idade>110 ,]$Idade = median(dados$Idade) 
 #buscamos novamente idades anormais
-dados[dados$Idade<0 | dados$Idade>110 ,]
+dados[dados$Idade<18 | dados$Idade>110 ,]
 summary(dados$Idade)
 ```
 Dados duplicados
@@ -117,6 +116,8 @@ Estado fora do domínio
 unique(dados$Estado)
 summary(dados$Estado)
 #preencher com a moda, RS
+#O Estado de SP é um valor errônico.
+#Os Estados de TD e RP não existem.
 dados[!dados$Estado %in% c("RS","SC","PR"),]$Estado = "RS"
 summary(dados$Estado)
 #removemos fatores não usados
